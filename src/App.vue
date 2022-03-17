@@ -27,7 +27,7 @@
       Lingua: {{ getFlag( movie.original_language ) }}
     </p>
     <p>
-      Voto: {{ movie.vote_average }}
+      Voto:  {{ vote(movie.vote_average) }}
     </p>
 
   </div>
@@ -46,15 +46,21 @@
       Lingua: {{ getFlag( serie.original_language ) }}
     </p>
     <p>
-      Voto: {{ serie.vote_average }}
+      Voto:{{ vote(serie.vote_average) }}
     </p>
+     <div class="vote"
+      v-for="n in 5"
+      :key="n">
+        <i class="fa-regular fa-star"></i>
+        ciao
+
+      </div>
 
   </div>
   </div>
 </template>
 
 <script>
-
 import axios from 'axios'
 import getUnicodeFlagIcon from 'country-flag-icons/unicode'
 
@@ -69,7 +75,17 @@ export default {
       baseUrl: 'https://api.themoviedb.org/3'
     }
   },
+  computed:{
+   
+   
+  },
+    // vote nelle computed non funziona
+    // vote non prende this.el.vote_average
   methods:{
+     vote: ((num) =>{
+      return Math.ceil( num / 2 );
+    }),
+   
     getFlag: function(unicode){
       if( unicode === 'en'){
         unicode = 'gb';
