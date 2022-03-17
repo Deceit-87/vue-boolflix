@@ -13,49 +13,62 @@
     </div>
     
   
-  <div v-for="movie in movies"
-  :key="movie.id">
- 
-        <h3>Film</h3>
-    <p>
-      Titolo: {{ movie.title }} 
-    </p>
-    <p>
-      Titolo Originale: {{ movie.original_title }}
-    </p>
-    <p>
-      Lingua: {{ getFlag( movie.original_language ) }}
-    </p>
-    <p>
-      Voto:  {{ vote(movie.vote_average) }}
-    </p>
-
-  </div>
-
-  <div v-for="serie in serieTv"
-  :key="serie.id">
- 
-        <h3>TeleFilm</h3>
-    <p>
-      Titolo: {{serie.name}}
-    </p>
-    <p>
-      Titolo Originale: {{ serie.original_name }}
-    </p>
-    <p>
-      Lingua: {{ getFlag( serie.original_language ) }}
-    </p>
-    <p>
-      Voto:{{ vote(serie.vote_average) }}
-    </p>
-     <div class="vote"
-      v-for="n in 5"
-      :key="n">
-        <i class="fa-regular fa-star"></i>
-        ciao
-
+  <div class="card_wrapper">
+    <div class="card_container"
+    v-for="movie in movies"
+    :key="movie.id">
+          <h3>Film</h3>
+            <div class="img-wrapper">
+              <img :src="`${imgBaseUrl}${movie.poster_path}`" alt="">
+             </div>
+          <p>
+            Titolo: {{movie.name}}
+          </p>
+          <p>
+            Titolo Originale: {{ movie.original_name }}
+          </p>
+          <p>
+            Lingua: {{ getFlag( movie.original_language ) }}
+          </p>
+          <p>
+            Voto:{{ vote(movie.vote_average) }}
+          </p>
+          <div class="vote" >
+            <span v-for="(n) in 5" :key="n">
+              <i  :class="n <= vote(movie.vote_average)  ? 'fa-solid' : 'fa-regular' " 
+              class="fa-star"></i>
+            </span>
+          </div>
       </div>
+  
 
+  
+     <div class="card_container"
+     v-for="serie in serieTv"
+     :key="serie.id">
+        <h3>TeleFilm</h3>
+        <div class="img-wrapper">
+        <img :src="`${imgBaseUrl}${serie.poster_path}`" alt="">
+        </div>
+        <p>
+          Titolo: {{serie.name}}
+        </p>
+        <p>
+          Titolo Originale: {{ serie.original_name }}
+        </p>
+        <p>
+          Lingua: {{ getFlag( serie.original_language ) }}
+        </p>
+        <p>
+          Voto:{{ vote(serie.vote_average) }}
+        </p>
+        <div class="vote" >
+          <span v-for="n in 5" :key="n">
+            <i class="fa-star"
+            :class="n <= vote(serie.vote_average) ? 'fa-solid' : 'fa-regular'"></i>
+          </span>
+        </div>
+    </div>
   </div>
   </div>
 </template>
@@ -72,7 +85,8 @@ export default {
       search: this.search,
       movies:[],
       serieTv:[],
-      baseUrl: 'https://api.themoviedb.org/3'
+      baseUrl: 'https://api.themoviedb.org/3',
+      imgBaseUrl: 'https://image.tmdb.org/t/p/w342',
     }
   },
   computed:{
@@ -119,6 +133,7 @@ export default {
     .then(res => {
       console.log(res.data)
       this.serieTv = res.data.results 
+       this.search = '';
 
     })
    },
@@ -130,6 +145,10 @@ export default {
 </script>
 
 <style lang="scss">
+
+
+@import '~@fortawesome/fontawesome-free/css/all.css';
+
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -137,5 +156,36 @@ export default {
   text-align: center;
   color: #2c3e50;
   margin-top: 60px;
+}
+
+
+.vote {
+  display: flex;
+  justify-content: center;
+}
+
+.card_wrapper{
+  display: flex;
+  flex-wrap: wrap;
+  margin: 0 auto;
+  width: 80%;
+  justify-content: space-between;
+  .card_container{
+    width: 24%;
+    border: 1px solid lightgray;
+    margin: 1px;
+    font-size: 12px;
+    
+    }
+  }
+  .img-wrapper{
+    width: 100%;
+    height: 233px;
+    img{
+          width: 100%;
+          height: 100%;
+          object-position: bottom;
+          object-fit: cover;
+      }
 }
 </style>
