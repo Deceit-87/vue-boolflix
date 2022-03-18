@@ -17,28 +17,27 @@
     <div class="card_container"
     v-for="movie in movies"
     :key="movie.id">
+        <div class="img-wrapper">
+          <img :src="`${imgBaseUrl}${movie.poster_path}`" alt="">
+          <div class="info-wrapper">
           <h3>Film</h3>
-            <div class="img-wrapper">
-              <img :src="`${imgBaseUrl}${movie.poster_path}`" alt="">
-             </div>
-          <p>
-            Titolo: {{movie.name}}
-          </p>
-          <p>
-            Titolo Originale: {{ movie.original_name }}
-          </p>
-          <p>
-            Lingua: {{ getFlag( movie.original_language ) }}
-          </p>
-          <p>
-            Voto:{{ vote(movie.vote_average) }}
-          </p>
-          <div class="vote" >
-            <span v-for="(n) in 5" :key="n">
-              <i  :class="n <= vote(movie.vote_average)  ? 'fa-solid' : 'fa-regular' " 
-              class="fa-star"></i>
-            </span>
+            <p>
+              Titolo: {{movie.title}}
+            </p>
+            <p>
+              Titolo Originale: {{ movie.original_title }}
+            </p>
+            <p>
+              Lingua: {{ getFlag( movie.original_language ) }}
+            </p>
+            <div class="vote" >
+              <span v-for="n in 5" :key="n">
+                <i class="fa-star"
+                :class="n <= vote(movie.vote_average) ? 'fa-solid' : 'fa-regular'"></i>
+              </span>
+            </div>
           </div>
+        </div>
       </div>
   
 
@@ -46,27 +45,26 @@
      <div class="card_container"
      v-for="serie in serieTv"
      :key="serie.id">
-        <h3>TeleFilm</h3>
         <div class="img-wrapper">
-        <img :src="`${imgBaseUrl}${serie.poster_path}`" alt="">
-        </div>
-        <p>
-          Titolo: {{serie.name}}
-        </p>
-        <p>
-          Titolo Originale: {{ serie.original_name }}
-        </p>
-        <p>
-          Lingua: {{ getFlag( serie.original_language ) }}
-        </p>
-        <p>
-          Voto:{{ vote(serie.vote_average) }}
-        </p>
-        <div class="vote" >
-          <span v-for="n in 5" :key="n">
-            <i class="fa-star"
-            :class="n <= vote(serie.vote_average) ? 'fa-solid' : 'fa-regular'"></i>
-          </span>
+         <img :src="`${imgBaseUrl}${serie.poster_path}`" alt="">
+          <div class="info-wrapper">
+              <h3>TeleFilm</h3>
+              <p>
+                Titolo: {{serie.name}}
+              </p>
+              <p>
+                Titolo Originale: {{ serie.original_name }}
+              </p>
+              <p>
+                Lingua: {{ getFlag( serie.original_language ) }}
+              </p>
+              <div class="vote" >
+                <span v-for="n in 5" :key="n">
+                  <i class="fa-star"
+                  :class="n <= vote(serie.vote_average) ? 'fa-solid' : 'fa-regular'"></i>
+                </span>
+              </div>
+          </div>
         </div>
     </div>
   </div>
@@ -82,7 +80,7 @@ export default {
   name: 'App',
   data(){
     return {
-      search: this.search,
+      search: 'titanic',
       movies:[],
       serieTv:[],
       baseUrl: 'https://api.themoviedb.org/3',
@@ -148,12 +146,15 @@ export default {
 
 
 @import '~@fortawesome/fontawesome-free/css/all.css';
-
+*{
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  text-align: center;
   color: #2c3e50;
   margin-top: 60px;
 }
@@ -172,20 +173,42 @@ export default {
   justify-content: space-between;
   .card_container{
     width: 24%;
-    border: 1px solid lightgray;
     margin: 1px;
     font-size: 12px;
+    &:hover .info-wrapper{
+      visibility: visible;
+    }
     
     }
-  }
-  .img-wrapper{
+}
+.info-wrapper{
+    visibility: hidden;
+    position: absolute;
+    color: white;
+    top: 0;
+    left: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    font-size: 1.5vw;
+    padding: 5px;
+    background: rgba(0, 0, 0, 0.541);
+    bottom: 0;
+    right: 0;
+    
+    
+    
+ }
+.img-wrapper{
     width: 100%;
-    height: 233px;
+    position: relative;
+    
     img{
           width: 100%;
-          height: 100%;
-          object-position: bottom;
+          object-position: center;
           object-fit: cover;
+          aspect-ratio: 2/3;
+          display: block;
       }
 }
 </style>
