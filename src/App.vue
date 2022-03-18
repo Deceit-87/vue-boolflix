@@ -172,14 +172,15 @@ export default {
   width: 80%;
   justify-content: space-between;
   .card_container{
-    width: 24%;
-    margin: 1px;
+    width: 23%;
     font-size: 12px;
+    padding: 1%;
+    margin: 1%;
     &:hover .info-wrapper{
       visibility: visible;
     }
     
-    }
+  }
 }
 .info-wrapper{
     visibility: hidden;
