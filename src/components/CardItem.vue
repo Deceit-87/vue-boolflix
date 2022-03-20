@@ -10,17 +10,27 @@
       <div class="info-wrapper">
         <h3>{{ genre }}</h3>
         <p>Titolo: {{ title }}</p>
-        <p v-show="title != originalTitle">Titolo Originale: {{ originalTitle }}</p>
+        <p v-show="title != originalTitle">
+          Titolo Originale: {{ originalTitle }}
+        </p>
         <p>Lingua: {{ getFlag(element.original_language) }}</p>
         <div class="vote">
           <span v-for="n in 5" :key="n">
-            <i class="fa-star"
+            <i
+              class="fa-star"
               :class="
                 n <= vote(element.vote_average) ? 'fa-solid' : 'fa-regular'
               "
             ></i>
           </span>
         </div>
+        <div  class="trama-wrapper">
+            <details v-if="element.overview != ''">
+              {{ element.overview }}
+              <summary>Overview</summary>
+            </details>
+            <p v-else>Overview non disponibile</p>
+          </div>
       </div>
     </div>
   </div>
@@ -120,7 +130,10 @@ img {
   aspect-ratio: 2/3;
   display: block;
 }
-.fa-solid{
-    color: gold;
+.fa-solid {
+  color: gold;
+}
+.trama-wrapper {
+  display: block;
 }
 </style>

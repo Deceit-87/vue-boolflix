@@ -62,7 +62,7 @@ export default {
     overflow: hidden;
     position: relative;
     border:1px solid white;
-    transition: all 1.5s;
+    transition: all 1s;
     input {
         border: none;
       float: right;
@@ -88,7 +88,7 @@ export default {
   .closed{
       width: 24px;
       border-color:transparent ;
-      transition: all 1.5s;
+      transition: all 1s;
   }
 }
 </style>
