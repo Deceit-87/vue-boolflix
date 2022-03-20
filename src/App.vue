@@ -1,6 +1,7 @@
 <template>
   <div id="app">
-    <div>
+    <NavBar/>
+    <!-- <div>
 
     <input type="text"
      v-model="search"
@@ -10,15 +11,23 @@
     <button @click="fetchData"
     >Go...</button>
 
-    </div>
-    
+    </div> -->
   
-  <div class="card_wrapper">
-    <div class="card_container"
+  
+  <div v-show="searchLength > 0" class="card_wrapper">
+    <CardItem v-for="movie in movies"
+    :key="movie.id"
+    :element='movie'/>
+    <CardItem v-for="serie in serieTv"
+    :key="serie.id"
+    :element='serie'/>
+    <!-- <div class="card_container"
     v-for="movie in movies"
     :key="movie.id">
         <div class="img-wrapper">
-          <img :src="`${imgBaseUrl}${movie.poster_path}`" alt="">
+          <img v-if="movie.poster_path" :src="`${imgBaseUrl}${movie.poster_path}`" alt="">
+          <img v-else
+          src="./assets/img/original.gif" alt="">
           <div class="info-wrapper">
           <h3>Film</h3>
             <p>
@@ -29,6 +38,7 @@
             </p>
             <p>
               Lingua: {{ getFlag( movie.original_language ) }}
+           
             </p>
             <div class="vote" >
               <span v-for="n in 5" :key="n">
@@ -46,7 +56,8 @@
      v-for="serie in serieTv"
      :key="serie.id">
         <div class="img-wrapper">
-         <img :src="`${imgBaseUrl}${serie.poster_path}`" alt="">
+         <img v-if="serie.poster_path" :src="`${imgBaseUrl}${serie.poster_path}`" alt="">
+         <img v-else src="./assets/img/original.gif" alt="">
           <div class="info-wrapper">
               <h3>TeleFilm</h3>
               <p>
@@ -66,83 +77,100 @@
               </div>
           </div>
         </div>
-    </div>
+    </div> -->
   </div>
   </div>
 </template>
 
 <script>
-import axios from 'axios'
-import getUnicodeFlagIcon from 'country-flag-icons/unicode'
+import state from './store.js'
+import NavBar from './components/NavBar.vue'
+import CardItem from './components/CardItem.vue'
+
+
+
 
 
 export default {
   name: 'App',
-  data(){
-    return {
-      search: 'titanic',
-      movies:[],
-      serieTv:[],
-      baseUrl: 'https://api.themoviedb.org/3',
-      imgBaseUrl: 'https://image.tmdb.org/t/p/w342',
-    }
+  components:{
+    NavBar,
+    CardItem,
+
   },
+
   computed:{
-   
+      searchLength: function(){
+        return state.search.length
+      },
+      movies: function(){
+        return state.movies
+      },
+      serieTv: function(){
+        return state.serieTv
+      },
+      search: function() {
+        return state.search
+      }
+  
+  //  vote2: function (){
+  //     return Math.ceil( this.serie.average_vote / 2 );
+  //  },
    
   },
     // vote nelle computed non funziona
     // vote non prende this.el.vote_average
-  methods:{
-     vote: ((num) =>{
-      return Math.ceil( num / 2 );
-    }),
+  // methods:{
+  //    vote: ((num) =>{
+  //     return Math.ceil( num / 2 );
+  //   }),
    
-    getFlag: function(unicode){
-      if( unicode === 'en'){
-        unicode = 'gb';
-      }
+  //   getFlag: function(unicode){
+  //     if( unicode === 'en'){
+  //       unicode = 'gb';
+  //     }
 
-      return getUnicodeFlagIcon(unicode)
+  //     return getUnicodeFlagIcon(unicode)
 
-    },
+  //   },
 
-   fetchData: function(){
-      axios.get(`${this.baseUrl}/search/movie`,{
-      params: {
-        api_key: '5d4ef6c201c090629b1def178dcc3dee', 
-        query: this.search,
-        language: 'it-IT',
-      }
-    })
-    .then(res => {
-      console.log(res.data);
-      this.movies = res.data.results ;
-      this.search = '';
-    }),
+  //  fetchData: function(){
+  //     axios.get(`${this.baseUrl}/search/movie`,{
+  //     params: {
+  //       api_key: '5d4ef6c201c090629b1def178dcc3dee', 
+  //       query: this.search,
+  //       language: 'it-IT',
+  //     }
+  //   })
+  //   .then(res => {
+  //     console.log(res.data);
+  //     this.movies = res.data.results ;
+  //     this.search = '';
+  //   }),
    
-    axios.get(`${this.baseUrl}/search/tv`,{
-      params: {
-        api_key: '5d4ef6c201c090629b1def178dcc3dee', 
-        query: this.search,
-        language: 'it-IT',
-      }
-    })
-    .then(res => {
-      console.log(res.data)
-      this.serieTv = res.data.results 
-       this.search = '';
+  //   axios.get(`${this.baseUrl}/search/tv`,{
+  //     params: {
+  //       api_key: '5d4ef6c201c090629b1def178dcc3dee', 
+  //       query: this.search,
+  //       language: 'it-IT',
+  //     }
+  //   })
+  //   .then(res => {
+  //     console.log(res.data)
+  //     this.serieTv = res.data.results 
+  //      this.search = '';
 
-    })
-   },
-  },
-  created(){
+  //   })
+  //  },
+//   },
+//   created(){
    
-  },
+//   },
+// }
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" >
 
 
 @import '~@fortawesome/fontawesome-free/css/all.css';
@@ -156,7 +184,8 @@ export default {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   color: #2c3e50;
-  margin-top: 60px;
+  background-color: #141414;
+  min-height: 100vh;
 }
 
 
@@ -170,8 +199,10 @@ export default {
   flex-wrap: wrap;
   margin: 0 auto;
   width: 80%;
-  justify-content: space-between;
-  .card_container{
+  justify-content: flex-start;
+  
+}
+.card_container{
     width: 23%;
     font-size: 12px;
     padding: 1%;
@@ -181,35 +212,5 @@ export default {
     }
     
   }
-}
-.info-wrapper{
-    visibility: hidden;
-    position: absolute;
-    color: white;
-    top: 0;
-    left: 0;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    font-size: 1.5vw;
-    padding: 5px;
-    background: rgba(0, 0, 0, 0.541);
-    bottom: 0;
-    right: 0;
-    
-    
-    
- }
-.img-wrapper{
-    width: 100%;
-    position: relative;
-    
-    img{
-          width: 100%;
-          object-position: center;
-          object-fit: cover;
-          aspect-ratio: 2/3;
-          display: block;
-      }
-}
+
 </style>
