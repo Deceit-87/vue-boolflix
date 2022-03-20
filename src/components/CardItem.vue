@@ -7,7 +7,8 @@
         alt=""
       />
       <img v-else src="../assets/img/original.gif" alt="" />
-      <div class="info-wrapper">
+      <div class="info-wrapper"
+      :class="element.poster_path ? '' : 'visible'">
         <h3>{{ genre }}</h3>
         <p>Titolo: {{ title }}</p>
         <p v-show="title != originalTitle">
@@ -101,6 +102,9 @@ export default {
 </script>
 
 <style scoped>
+.visible{
+  visibility: visible !important;
+}
 .vote {
   display: flex;
   justify-content: center;
@@ -145,4 +149,19 @@ img {
 .trama-wrapper {
   display: block;
 }
+
+@media screen and (max-width: 992px) {
+  .card_container {
+  width: 31%;
+  }
+}
+@media screen and (max-width: 360px) {
+  .card_container {
+  width: 100%;
+  }
+  .info-wrapper{
+    font-size: 4.5vw;
+  }
+}
+
 </style>

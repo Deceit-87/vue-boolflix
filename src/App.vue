@@ -212,5 +212,16 @@ export default {
     }
     
   }
-
+@media screen and (max-width: 360px) {
+  .card_container{
+    width: 23%;
+    font-size: 12px;
+    padding: 1%;
+    margin: 1%;
+    &:active .info-wrapper{
+      visibility: visible;
+    }
+    
+  }
+}
 </style>
