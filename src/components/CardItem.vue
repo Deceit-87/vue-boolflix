@@ -25,7 +25,8 @@
           </span>
         </div>
         <div  class="trama-wrapper">
-            <details v-if="element.overview != ''">
+            <details id="det" @mouseleave="toggle" v-if="element.overview != ''">
+              
               {{ element.overview }}
               <summary>Overview</summary>
             </details>
@@ -76,6 +77,14 @@ export default {
   },
 
   methods: {
+    toggle: function(){
+      const details = document.querySelectorAll('details')
+      details.forEach(function(details){
+      details.removeAttribute('open','')
+      console.log(details)
+      console.log('sto cazzo')
+      })
+    },
     vote: (num) => {
       return Math.ceil(num / 2);
     },
